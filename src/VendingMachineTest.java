@@ -53,11 +53,16 @@ public class VendingMachineTest {
 //GET BALANCE TESTS
     @Test
     void testGetBalance() {
-
+        //act+assert (balance should start with 0)
+        assertEquals(0.0,machine.getBalance(),0.001);
     }
 
     @Test
     void testGetBalanceAfterInsert() {
+        //act
+        machine.insertMoney(5);
+        //assert
+        assertEquals(5,machine.getBalance(),0.001);
 
     }
 
