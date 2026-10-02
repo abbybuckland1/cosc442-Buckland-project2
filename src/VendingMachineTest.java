@@ -5,7 +5,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 public class VendingMachineTest {
 
@@ -103,18 +105,30 @@ public class VendingMachineTest {
 //MAKE PURCHASE TESTS
     @Test
     void testMakePurchase() {
-
+        //arrange
+        machine.addItem(item,"A");
+        machine.insertMoney(2.50);
+        //act+assert
+        assertTrue(machine.makePurchase("A"));
+        assertEquals(1.50, machine.getBalance(),0.001); //item price subtracted from balance
     }
 
      @Test
     void testMakePurchaseNotEnoughMoney() {
-
+        //arrange: add 1.00 item but only insert 0.50, not enough money
+        machine.addItem(item,"A");
+        machine.insertMoney(0.50);
+        //act+assert
+        assertFalse(machine.makePurchase("A"));
     }
+
 
      @Test
     void testMakePurchaseEmptySlot() {
-
+        //act+assert: purchase from empty slot
+        assertFalse(machine.makePurchase("B"));
     }
+
 
 //REMOVE ITEM TESTS
     @Test
