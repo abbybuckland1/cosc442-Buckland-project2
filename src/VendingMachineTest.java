@@ -154,11 +154,18 @@ public class VendingMachineTest {
 //RETURN CHANGE TESTS
     @Test
     void testReturnChange() {
-
+        //arrange
+        machine.insertMoney(5.00);
+        //act+assert
+        assertEquals(5.00, machine.returnChange(), 0.001);
+        //assert
+        assertEquals(0.0,machine.getBalance(),0.001);
     }
 
     @Test
     void testReturnChangeZeroBalance() {
+        //assert+act
+        assertEquals(0.0,machine.returnChange(),0.001);
 
     }
 }
