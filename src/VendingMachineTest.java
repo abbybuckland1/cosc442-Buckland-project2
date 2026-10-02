@@ -104,17 +104,22 @@ public class VendingMachineTest {
 //REMOVE ITEM TESTS
     @Test
     void testRemoveItem() {
-
+        //arrange
+        machine.addItem(item,"A");
+        //act+assert: remove item from slot A and check it was the correct item
+        assertEquals(item,machine.removeItem("A"));
     }
 
     @Test 
     void testRemoveItemEmptySlot(){
-
+          //act+assert: removing an item from empty slot D should throw exception
+        assertThrows(VendingMachineException.class, ()-> machine.removeItem("D"));
     }
 
     @Test 
     void testRemoveItemInvalidCode(){
-
+          //act+assert: removing an item from invalid slot E should throw exception
+        assertThrows(VendingMachineException.class, ()-> machine.removeItem("E"));
     }
 
 //RETURN CHANGE TESTS
