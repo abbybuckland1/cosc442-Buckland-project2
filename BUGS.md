@@ -1,0 +1,3 @@
+|Bug|Observed Failure| Test that exposed it | source-code fault that caused it| how you diagnosed the fault | correction made |
+|---|---|---|---|---|---|
+|1. VendingMachine Array Index in Constructor| ArrayIndexOutOfBoundsException when a VendingMachine object is created | testAddItem()| i<=NUM_SLOTS in the VendingMachine constructor for loop lets i reach 4 but itemArray only has indexes 0,1,2,3 | VS code debugger and stepped through the loop. Error happened when itemArray[4] | Changed it to i<NUM_SLOTS|
