@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +26,16 @@ public class VendingMachineTest {
         machine = null;
         item=null;
     }
+
+//testing the inital slots
+    @Test 
+    void testInitialSlotsEmpty(){
+        assertNull(machine.getItem("A"));
+        assertNull(machine.getItem("B"));
+        assertNull(machine.getItem("C"));
+        assertNull(machine.getItem("D"));
+}
+
 //ADD ITEM TESTS
     @Test
     void testAddItem() {
@@ -80,10 +91,15 @@ public class VendingMachineTest {
 
     @Test 
     void testGetItemInvalidCode(){
-
-          //act+assert: getting an item from invalid slot E should throw exception
+        //act+assert: getting an item from invalid slot E should throw exception
         assertThrows(VendingMachineException.class, ()-> machine.getItem("E"));
     }
+
+    @Test
+    void testGetItemEmptySlot() {   
+        //act+assert: getting an item from an empty valid slot should return null
+        assertNull(machine.getItem("A"));
+}
 
 //INSERT MONEY TESTS
     @ParameterizedTest 
@@ -93,6 +109,18 @@ public class VendingMachineTest {
         machine.insertMoney(amount);
         //assert
         assertEquals(amount,machine.getBalance(),0.001);
+    }
+
+    @Test
+    void testInsertMoneyAddsToBalance() {
+        //act: start with 5 dollars
+        machine.insertMoney(5.00);
+
+        //act: insert another 2 dollars
+        machine.insertMoney(2.00);
+
+        //assert: previous balance plus amount should equal 7
+        assertEquals(7.00, machine.getBalance(), 0.001);
     }
 
     @Test
@@ -111,6 +139,20 @@ public class VendingMachineTest {
         //act+assert
         assertTrue(machine.makePurchase("A"));
         assertEquals(1.50, machine.getBalance(),0.001); //item price subtracted from balance
+    }
+
+    @Test
+    void testMakePurchaseExactBalance() {
+        //arrange: item costs exactly 1 dollar
+        machine.addItem(item, "A");
+        machine.insertMoney(1.00);
+
+        //act+assert: purchase should succeed with exact balance
+        assertTrue(machine.makePurchase("A"));
+
+        //assert: entire balance should be used
+        assertEquals(0.0, machine.getBalance(), 0.001);
+        assertNull(machine.getItem("A"));
     }
 
      @Test
@@ -137,6 +179,7 @@ public class VendingMachineTest {
         machine.addItem(item,"A");
         //act+assert: remove item from slot A and check it was the correct item
         assertEquals(item,machine.removeItem("A"));
+        assertNull(machine.getItem("A"));
     }
 
     @Test 
