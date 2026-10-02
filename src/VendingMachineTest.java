@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
@@ -76,15 +79,22 @@ public class VendingMachineTest {
     }
 
 //INSERT MONEY TESTS
-    @Test
-    void testInsertMoney() {
-
+    @ParameterizedTest 
+    @ValueSource(doubles={0.0,0.01,0.50,1.00,5.00,100.00,1000.00})
+    void testInsertMoney(double amount) {
+        //act
+        machine.insertMoney(amount);
+        //assert
+        assertEquals(amount,machine.getBalance(),0.001);
     }
 
     @Test
     void testInsertMoneyNegative() {
-
+        
+          //act+assert: inserting money <0 should throw exception
+        assertThrows(VendingMachineException.class, ()-> machine.insertMoney(-0.01));
     }
+
 //MAKE PURCHASE TESTS
     @Test
     void testMakePurchase() {
