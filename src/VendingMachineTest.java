@@ -141,6 +141,21 @@ public class VendingMachineTest {
         assertEquals(1.50, machine.getBalance(),0.001); //item price subtracted from balance
     }
 
+        @Test
+    void testMakePurchaseMultipleItems() {
+        //arrange
+        VendingMachineItem item2 = new VendingMachineItem("Candy", 0.75);
+        machine.addItem(item,"A");
+        machine.addItem(item2,"B");
+        machine.insertMoney(1.75);
+        //act+assert
+        assertTrue(machine.makePurchase("A"));
+        assertEquals(0.75, machine.getBalance(),0.001); //item price subtracted from balance
+        assertTrue(machine.makePurchase("B"));
+        assertEquals(0.00, machine.getBalance(),0.001);
+    }
+
+
     @Test
     void testMakePurchaseExactBalance() {
         //arrange: item costs exactly 1 dollar
@@ -153,6 +168,20 @@ public class VendingMachineTest {
         //assert: entire balance should be used
         assertEquals(0.0, machine.getBalance(), 0.001);
         assertNull(machine.getItem("A"));
+    }
+
+ 
+@Test
+    void testPurchaseWithMultipleInserts(){
+        VendingMachineItem item = new VendingMachineItem("Candy", 0.75);
+        machine.addItem(item, "A");
+        machine.insertMoney(0.10);
+        machine.insertMoney(0.10);
+        machine.insertMoney(0.25);
+        machine.insertMoney(0.25);
+        machine.insertMoney(0.05);
+        //act+assert
+        assertTrue(machine.makePurchase("A"));
     }
 
      @Test
